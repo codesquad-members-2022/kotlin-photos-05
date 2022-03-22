@@ -1,10 +1,11 @@
 package com.example.photos
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.random.Random
 
@@ -27,5 +28,11 @@ class MainActivity : AppCompatActivity() {
         recycler.clipToPadding = false
         recycler.clipChildren = false
         recycler.addItemDecoration(ItemDecoration())
+
+        val button = findViewById<Button>(R.id.button)
+        button.setOnClickListener {
+            val intent = Intent(this, PhotoActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
