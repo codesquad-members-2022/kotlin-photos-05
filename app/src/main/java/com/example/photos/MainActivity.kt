@@ -7,30 +7,29 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.photos.databinding.ActivityMainBinding
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val colorList: MutableList<Int> = mutableListOf()
         for (i in 1..40) {
             colorList.add(Color.rgb(Random.nextInt(0, 255), Random.nextInt(0, 255), Random.nextInt(0, 255)))
         }
 
-        val adapter = RecyclerAdapter(colorList)
+        binding.recycler.adapter = RecyclerAdapter(colorList)
+        binding.recycler.layoutManager = GridLayoutManager(this, 4)
+        binding.recycler.clipToPadding = false
+        binding.recycler.clipChildren = false
+        binding.recycler.addItemDecoration(ItemDecoration())
 
-        val recycler = findViewById<RecyclerView>(R.id.recycler)
-        recycler.adapter = adapter
-        recycler.layoutManager = GridLayoutManager(this, 4)
-        recycler.clipToPadding = false
-        recycler.clipChildren = false
-        recycler.addItemDecoration(ItemDecoration())
-
-        val button = findViewById<Button>(R.id.button)
-        button.setOnClickListener {
+        binding.button.setOnClickListener {
             val intent = Intent(this, PhotoActivity::class.java)
             startActivity(intent)
         }
