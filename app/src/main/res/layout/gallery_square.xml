@@ -3,5 +3,5 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/imageView"
-    android:layout_width="80dp"
-    android:layout_height="80dp" />
+    android:layout_width="100dp"
+    android:layout_height="100dp" />
