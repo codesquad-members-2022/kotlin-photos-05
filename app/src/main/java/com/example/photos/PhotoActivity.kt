@@ -2,18 +2,12 @@ package com.example.photos
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import com.example.photos.databinding.ActivityPhotoBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -26,11 +20,9 @@ class PhotoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val image = findViewById<ImageView>(R.id.activity_photo_imageview)
-        image.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24)
+        binding.activityPhotoImageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24)
 
-        val button = findViewById<Button>(R.id.activity_photo_button)
-        button.setOnClickListener { requestPermissionLauncher.launch(REQUIRED_PERMISSIONS) }
+        binding.activityPhotoButton.setOnClickListener { requestPermissionLauncher.launch(REQUIRED_PERMISSIONS) }
     }
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -58,11 +50,6 @@ class PhotoActivity : AppCompatActivity() {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             data = Uri.fromParts("package", packageName, null)
         }.run(::startActivity)
-    }
-
-    // REQUIRED_PERMISSIONS 중 하나라도 권한이 부여되지 않은 경우 false 를 반환하는 함수
-    private fun isAllPermissionGranted(): Boolean = REQUIRED_PERMISSIONS.all { permission ->
-        ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     companion object {
