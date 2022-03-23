@@ -5,16 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.photos.databinding.ColorSquareBinding
 
 class RecyclerAdapter(private var dataset: MutableList<Int>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
+    inner class ViewHolder(binding: ColorSquareBinding) : RecyclerView.ViewHolder(binding.root) {
+        val imageView: ImageView = binding.imageView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.color_square, parent, false)
-        return ViewHolder(itemView)
+        val binding = ColorSquareBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
