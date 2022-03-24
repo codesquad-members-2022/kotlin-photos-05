@@ -66,8 +66,8 @@ class GalleryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
-        val menu = binding.topAppToolbar.menu[0]
-        menu.setOnMenuItemClickListener { menuItem ->
+        val plusButton = binding.galleryTopAppToolbar.menu[0]
+        plusButton.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.plus_icon -> {
                     val intent = Intent(this, DoodlesActivity::class.java)
