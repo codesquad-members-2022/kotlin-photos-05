@@ -3,4 +3,6 @@
     <string name="top_app_toolbar">Photos</string>
     <string name="permission">Permission</string>
     <string name="gallery">Gallery</string>
+    <string name="addicon">AddIcon</string>
+    <string name="close_icon">close_icon</string>
 </resources>

@@ -8,14 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
-import android.util.Log
+import android.view.Menu
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
+import androidx.core.view.get
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.photos.PhotoActivity
 import com.example.photos.R
 import com.example.photos.databinding.ActivityGalleryBinding
-import com.example.photos.databinding.ActivityPhotoBinding
 import com.example.photos.step3.model.Image
 import com.google.android.material.snackbar.Snackbar
 
@@ -67,6 +66,22 @@ class GalleryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
+        val plusButton = binding.galleryTopAppToolbar.menu[0]
+        plusButton.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.plus_icon -> {
+                    val intent = Intent(this, DoodlesActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.gallery_appbar_menu, menu)
+        return true
     }
 
     private fun getAllImagePathInStorage(): List<Image> {
