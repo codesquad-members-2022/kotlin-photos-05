@@ -3,6 +3,8 @@ package com.example.photos.step3.gallery
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +24,16 @@ class GalleryAdapter(
         private val imageView: ImageView = view.findViewById(R.id.imageView)
 
         fun bind(path: String) {
-            val bitmap = decodeSampledBitmapFromPath(path)
-            imageView.scaleType = ImageView.ScaleType.FIT_XY
-            imageView.setImageBitmap(bitmap)
+            imageView.setImageBitmap(null)
+            // TODO 코루틴으로 변경
+            val thread = Thread(Runnable() {
+                val bitmap = decodeSampledBitmapFromPath(path)
+                val handler = Handler(Looper.getMainLooper()).post(Runnable() {
+                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                    imageView.setImageBitmap(bitmap)
+                })
+            })
+            thread.start()
         }
 
         // https://developer.android.com/topic/performance/graphics/load-bitmap
