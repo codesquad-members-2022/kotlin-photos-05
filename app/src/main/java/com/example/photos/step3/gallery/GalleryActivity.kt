@@ -12,7 +12,6 @@ import android.view.Menu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.get
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.photos.PhotoActivity
 import com.example.photos.R
 import com.example.photos.databinding.ActivityGalleryBinding
 import com.example.photos.step3.model.Image
