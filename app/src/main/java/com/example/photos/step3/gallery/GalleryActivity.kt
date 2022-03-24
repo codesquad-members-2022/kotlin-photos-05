@@ -1,34 +1,72 @@
 package com.example.photos.step3.gallery
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photos.R
+import com.example.photos.databinding.ActivityGalleryBinding
+import com.example.photos.databinding.ActivityPhotoBinding
 import com.example.photos.step3.model.Image
+import com.google.android.material.snackbar.Snackbar
 
 class GalleryActivity : AppCompatActivity() {
 
-    private lateinit var recyclerGallery: RecyclerView
+    private val binding by lazy {
+        ActivityGalleryBinding.inflate(layoutInflater)
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+        )
+    }
+
+    private fun openSetting() {
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            data = Uri.fromParts("package", packageName, null)
+        }.run(::startActivity)
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        permissions.entries.forEach { permission ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                when {
+                    permission.value -> {
+                        Snackbar.make(binding.root, "권한이 허용되었습니다", Snackbar.LENGTH_SHORT).show()
+                        val imageList = getAllImagePathInStorage()
+                        val galleryAdapter = GalleryAdapter(contentResolver, imageList)
+                        binding.recyclerGallery.adapter = galleryAdapter
+                        binding.recyclerGallery.layoutManager = GridLayoutManager(this, 4)
+                        galleryAdapter.submitList(imageList)
+                    }
+                    shouldShowRequestPermissionRationale(permission.key) -> {
+                        Snackbar.make(binding.root, "앱을 이용하려면 권한이 필요합니다", Snackbar.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        Snackbar.make(binding.root, "권한이 없습니다.", Snackbar.LENGTH_SHORT).show()
+                        openSetting()
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gallery)
-        recyclerGallery = findViewById(R.id.recycler_gallery)
+        setContentView(binding.root)
 
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-            0
-        )
-
-        val imageList = getAllImagePathInStorage()
-        val galleryAdapter = GalleryAdapter(contentResolver, imageList)
-        recyclerGallery.adapter = galleryAdapter
-        recyclerGallery.layoutManager = GridLayoutManager(this, 4)
-        galleryAdapter.submitList(imageList)
+        requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
     }
 
     private fun getAllImagePathInStorage(): List<Image> {

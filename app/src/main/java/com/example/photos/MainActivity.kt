@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photos.databinding.ActivityMainBinding
+import com.example.photos.step3.gallery.GalleryActivity
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -29,8 +30,13 @@ class MainActivity : AppCompatActivity() {
         binding.recycler.clipChildren = false
         binding.recycler.addItemDecoration(ItemDecoration())
 
-        binding.button.setOnClickListener {
+        binding.buttonPermission.setOnClickListener {
             val intent = Intent(this, PhotoActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.buttonGallery.setOnClickListener {
+            val intent = Intent(this, GalleryActivity::class.java)
             startActivity(intent)
         }
     }
