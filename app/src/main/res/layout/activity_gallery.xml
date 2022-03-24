@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
-            app:title="@string/top_app_toolbar" />
+            app:title="@string/top_app_toolbar"
+            app:menu="@menu/gallery_appbar_menu" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
