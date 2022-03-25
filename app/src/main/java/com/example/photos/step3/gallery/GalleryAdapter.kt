@@ -1,42 +1,28 @@
 package com.example.photos.step3.gallery
 
-import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photos.R
+import com.example.photos.databinding.GallerySquareBinding
 import com.example.photos.step3.model.Image
 
-class GalleryAdapter(
-    private val contentResolver: ContentResolver,
-    private val dataset: List<Image>
-) : ListAdapter<Image, GalleryAdapter.GalleryViewHolder>(MyDiffCallback) {
+class GalleryAdapter : ListAdapter<Image, GalleryAdapter.GalleryViewHolder>(MyDiffCallback) {
 
-    inner class GalleryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView: ImageView = view.findViewById(R.id.imageView)
+    class GalleryViewHolder(binding: GallerySquareBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val imageView: ImageView = binding.galleryImageView
 
         fun bind(path: String) {
             imageView.setImageBitmap(null)
-            // TODO 코루틴으로 변경
-            val thread = Thread(Runnable() {
-                val bitmap = decodeSampledBitmapFromPath(path)
-                val handler = Handler(Looper.getMainLooper()).post(Runnable() {
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    imageView.setImageBitmap(bitmap)
-                })
-            })
-            thread.start()
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            imageView.setImageBitmap(decodeSampledBitmapFromPath(path))
         }
 
-        // https://developer.android.com/topic/performance/graphics/load-bitmap
         private fun decodeSampledBitmapFromPath(
             path: String,
             reqWidth: Int = 100,
@@ -53,7 +39,11 @@ class GalleryAdapter(
             }
         }
 
-        private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        private fun calculateInSampleSize(
+            options: BitmapFactory.Options,
+            reqWidth: Int,
+            reqHeight: Int
+        ): Int {
             val (height: Int, width: Int) = options.run { outHeight to outWidth }
             var inSampleSize = 1
 
@@ -71,13 +61,14 @@ class GalleryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
-        val layout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.color_square, parent, false)
-        return GalleryViewHolder(layout)
+        val binding =
+            GallerySquareBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return GalleryViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
-        holder.bind(dataset[position].path)
+        val item = getItem(position)
+        holder.bind(item.path)
     }
 }
 
