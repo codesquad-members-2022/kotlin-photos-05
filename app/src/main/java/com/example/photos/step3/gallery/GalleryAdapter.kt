@@ -13,7 +13,7 @@ import com.example.photos.step3.model.Image
 
 class GalleryAdapter : ListAdapter<Image, GalleryAdapter.GalleryViewHolder>(MyDiffCallback) {
 
-    inner class GalleryViewHolder(binding: GallerySquareBinding) :
+    class GalleryViewHolder(binding: GallerySquareBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val imageView: ImageView = binding.galleryImageView
 
@@ -66,7 +66,7 @@ class GalleryAdapter : ListAdapter<Image, GalleryAdapter.GalleryViewHolder>(MyDi
         return GalleryViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GalleryAdapter.GalleryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item.path)
     }

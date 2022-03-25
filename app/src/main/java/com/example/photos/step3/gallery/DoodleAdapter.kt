@@ -15,7 +15,7 @@ import com.example.photos.step3.model.DoodleImage
 class DoodleAdapter :
     ListAdapter<DoodleImage, DoodleAdapter.DoodleViewHolder>(MyDoodleDiffCallback) {
 
-    inner class DoodleViewHolder(binding: DoodleSquareBinding) : RecyclerView.ViewHolder(binding.root) {
+    class DoodleViewHolder(binding: DoodleSquareBinding) : RecyclerView.ViewHolder(binding.root) {
         private val imageView: ImageView = binding.doodleImageView
 
         fun bind(bitmap: Bitmap) {
@@ -28,12 +28,12 @@ class DoodleAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): DoodleAdapter.DoodleViewHolder {
+    ): DoodleViewHolder {
         val binding = DoodleSquareBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DoodleViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: DoodleAdapter.DoodleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DoodleViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item.bitmap)
     }
