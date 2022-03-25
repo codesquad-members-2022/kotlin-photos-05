@@ -1,39 +1,26 @@
 package com.example.photos.step3.gallery
 
-import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photos.R
+import com.example.photos.databinding.GallerySquareBinding
 import com.example.photos.step3.model.Image
 
-class GalleryAdapter(
-    private val contentResolver: ContentResolver,
-    private val dataset: List<Image>
-) : ListAdapter<Image, GalleryAdapter.GalleryViewHolder>(MyDiffCallback) {
+class GalleryAdapter : ListAdapter<Image, GalleryAdapter.GalleryViewHolder>(MyDiffCallback) {
 
-    inner class GalleryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView: ImageView = view.findViewById(R.id.gallery_imageView)
+    inner class GalleryViewHolder(binding: GallerySquareBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val imageView: ImageView = binding.galleryImageView
 
         fun bind(path: String) {
             imageView.setImageBitmap(null)
-            // TODO 코루틴으로 변경
-            val thread = Thread(Runnable() {
-                val bitmap = decodeSampledBitmapFromPath(path)
-                val handler = Handler(Looper.getMainLooper()).post(Runnable() {
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    imageView.setImageBitmap(bitmap)
-                })
-            })
-            thread.start()
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            imageView.setImageBitmap(decodeSampledBitmapFromPath(path))
         }
 
         private fun decodeSampledBitmapFromPath(
@@ -74,13 +61,14 @@ class GalleryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
-        val layout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.gallery_square, parent, false)
-        return GalleryViewHolder(layout)
+        val binding =
+            GallerySquareBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return GalleryViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
-        holder.bind(dataset[position].path)
+    override fun onBindViewHolder(holder: GalleryAdapter.GalleryViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item.path)
     }
 }
 

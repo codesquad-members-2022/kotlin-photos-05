@@ -44,7 +44,7 @@ class GalleryActivity : AppCompatActivity() {
                         permission.value -> {
                             Snackbar.make(binding.root, "권한이 허용되었습니다", Snackbar.LENGTH_SHORT).show()
                             val imageList = getAllImagePathInStorage()
-                            val galleryAdapter = GalleryAdapter(contentResolver, imageList)
+                            val galleryAdapter = GalleryAdapter()
                             binding.recyclerGallery.adapter = galleryAdapter
                             binding.recyclerGallery.layoutManager = GridLayoutManager(this, 4)
                             galleryAdapter.submitList(imageList)

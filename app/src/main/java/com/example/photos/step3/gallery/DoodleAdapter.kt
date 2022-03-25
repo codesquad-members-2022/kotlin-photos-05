@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photos.R
+import com.example.photos.databinding.DoodleSquareBinding
 import com.example.photos.step3.model.DoodleImage
 
 class DoodleAdapter :
     ListAdapter<DoodleImage, DoodleAdapter.DoodleViewHolder>(MyDoodleDiffCallback) {
-    inner class DoodleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView: ImageView = view.findViewById(R.id.doodle_imageView)
+
+    inner class DoodleViewHolder(binding: DoodleSquareBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val imageView: ImageView = binding.doodleImageView
 
         fun bind(bitmap: Bitmap) {
             imageView.setImageBitmap(null)
@@ -27,9 +29,8 @@ class DoodleAdapter :
         parent: ViewGroup,
         viewType: Int
     ): DoodleAdapter.DoodleViewHolder {
-        val layout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.doodle_square, parent, false)
-        return DoodleViewHolder(layout)
+        val binding = DoodleSquareBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DoodleViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: DoodleAdapter.DoodleViewHolder, position: Int) {
