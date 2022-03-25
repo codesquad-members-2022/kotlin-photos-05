@@ -14,7 +14,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             app:title="Doodles"
-            app:navigationIcon="@drawable/ic_baseline_close_24" />
+            app:navigationIcon="@drawable/ic_baseline_close_24"
+            app:layout_scrollFlags="scroll|enterAlways" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
