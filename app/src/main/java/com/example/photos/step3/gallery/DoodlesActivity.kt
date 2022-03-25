@@ -2,9 +2,9 @@ package com.example.photos.step3.gallery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photos.databinding.ActivityDoodlesBinding
 
 class DoodlesActivity : AppCompatActivity() {
@@ -15,7 +15,6 @@ class DoodlesActivity : AppCompatActivity() {
 
     private lateinit var imageViewModel: ImageViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -25,10 +24,19 @@ class DoodlesActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        imageViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-            .get(ImageViewModel::class.java)
-        imageViewModel.getJsonDoodle()
-        Log.d("test", "${imageViewModel.jsonDoodleList.size}")
+        imageViewModel =
+            ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
+                ImageViewModel::class.java
+            )
+
+        val doodleAdapter = DoodleAdapter()
+        binding.doodlesRecyclerview.adapter = doodleAdapter
+        binding.doodlesRecyclerview.layoutManager = GridLayoutManager(this, 4)
+
+        imageViewModel.getImage()
+        imageViewModel.imageList.observe(this) {
+            doodleAdapter.submitList(it.toList())
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

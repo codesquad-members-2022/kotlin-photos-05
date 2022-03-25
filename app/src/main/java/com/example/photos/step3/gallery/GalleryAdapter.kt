@@ -21,7 +21,7 @@ class GalleryAdapter(
 ) : ListAdapter<Image, GalleryAdapter.GalleryViewHolder>(MyDiffCallback) {
 
     inner class GalleryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView: ImageView = view.findViewById(R.id.imageView)
+        private val imageView: ImageView = view.findViewById(R.id.gallery_imageView)
 
         fun bind(path: String) {
             imageView.setImageBitmap(null)
@@ -36,7 +36,6 @@ class GalleryAdapter(
             thread.start()
         }
 
-        // https://developer.android.com/topic/performance/graphics/load-bitmap
         private fun decodeSampledBitmapFromPath(
             path: String,
             reqWidth: Int = 100,
@@ -53,7 +52,11 @@ class GalleryAdapter(
             }
         }
 
-        private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        private fun calculateInSampleSize(
+            options: BitmapFactory.Options,
+            reqWidth: Int,
+            reqHeight: Int
+        ): Int {
             val (height: Int, width: Int) = options.run { outHeight to outWidth }
             var inSampleSize = 1
 
@@ -72,7 +75,7 @@ class GalleryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
         val layout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.color_square, parent, false)
+            .inflate(R.layout.gallery_square, parent, false)
         return GalleryViewHolder(layout)
     }
 

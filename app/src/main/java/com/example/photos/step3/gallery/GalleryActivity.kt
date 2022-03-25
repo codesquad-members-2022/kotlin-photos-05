@@ -36,29 +36,31 @@ class GalleryActivity : AppCompatActivity() {
         }.run(::startActivity)
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        permissions.entries.forEach { permission ->
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                when {
-                    permission.value -> {
-                        Snackbar.make(binding.root, "권한이 허용되었습니다", Snackbar.LENGTH_SHORT).show()
-                        val imageList = getAllImagePathInStorage()
-                        val galleryAdapter = GalleryAdapter(contentResolver, imageList)
-                        binding.recyclerGallery.adapter = galleryAdapter
-                        binding.recyclerGallery.layoutManager = GridLayoutManager(this, 4)
-                        galleryAdapter.submitList(imageList)
-                    }
-                    shouldShowRequestPermissionRationale(permission.key) -> {
-                        Snackbar.make(binding.root, "앱을 이용하려면 권한이 필요합니다", Snackbar.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        Snackbar.make(binding.root, "권한이 없습니다.", Snackbar.LENGTH_SHORT).show()
-                        openSetting()
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            permissions.entries.forEach { permission ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    when {
+                        permission.value -> {
+                            Snackbar.make(binding.root, "권한이 허용되었습니다", Snackbar.LENGTH_SHORT).show()
+                            val imageList = getAllImagePathInStorage()
+                            val galleryAdapter = GalleryAdapter(contentResolver, imageList)
+                            binding.recyclerGallery.adapter = galleryAdapter
+                            binding.recyclerGallery.layoutManager = GridLayoutManager(this, 4)
+                            galleryAdapter.submitList(imageList)
+                        }
+                        shouldShowRequestPermissionRationale(permission.key) -> {
+                            Snackbar.make(binding.root, "앱을 이용하려면 권한이 필요합니다", Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
+                        else -> {
+                            Snackbar.make(binding.root, "권한이 없습니다.", Snackbar.LENGTH_SHORT).show()
+                            openSetting()
+                        }
                     }
                 }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
