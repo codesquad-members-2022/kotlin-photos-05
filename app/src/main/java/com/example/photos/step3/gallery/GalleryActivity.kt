@@ -54,8 +54,10 @@ class GalleryActivity : AppCompatActivity() {
                                 .show()
                         }
                         else -> {
-                            Snackbar.make(binding.root, "권한이 없습니다.", Snackbar.LENGTH_SHORT).show()
-                            openSetting()
+                            Snackbar.make(binding.root, "권한이 없습니다.", Snackbar.LENGTH_SHORT)
+                                .setAction("설정") {
+                                    openSetting()
+                                }.show()
                         }
                     }
                 }

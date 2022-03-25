@@ -36,8 +36,10 @@ class PhotoActivity : AppCompatActivity() {
                         Snackbar.make(binding.root, "앱을 이용하려면 권한이 필요합니다", Snackbar.LENGTH_SHORT).show()
                     }
                     else -> {
-                        Snackbar.make(binding.root, "권한이 없습니다.", Snackbar.LENGTH_SHORT).show()
-                        openSetting()
+                        Snackbar.make(binding.root, "권한이 없습니다.", Snackbar.LENGTH_SHORT)
+                            .setAction("설정") {
+                                openSetting()
+                            }.show()
                     }
                 }
             }
